@@ -31,12 +31,12 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Splat:
-        m_Texture: {fileID: 2800000, guid: c1e4b5a198f7d7f468aea4f9af33617a, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _Displacement: 0.484
-    - _Glossiness: 0.458
+    - _Displacement: 0.05
+    - _Glossiness: 0.5
     - _Metallic: 0.514
     - _Tess: 10
     m_Colors:

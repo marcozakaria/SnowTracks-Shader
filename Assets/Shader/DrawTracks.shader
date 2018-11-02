@@ -52,7 +52,7 @@
 				// sample the texture , UV coordinates are alwys between 0 and 1 so we staturate it like clamp in C#
 				fixed4 col = tex2D(_MainTex, i.uv);
 				// make brush size by pow hugher the number smaller the brush
-				float draw = pow( saturate(1-distance(i.uv, _Coordinate.xy)),_Size);
+				float draw = pow( saturate(1-distance(i.uv, _Coordinate.xy)),500/_Size);
 				fixed4 drawcol = _Color * (draw *_Strength); // draw is multiplued by strength
 
 				return saturate(col + drawcol);
