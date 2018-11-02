@@ -28,18 +28,19 @@ public class WheelTracks : MonoBehaviour
         snowMaterial = terrainWithScript.GetComponent<MeshRenderer>().material; // will get snowTrack shader
         splatMap = new RenderTexture(1024, 1024, 0, RenderTextureFormat.ARGBFloat);
         snowMaterial.SetTexture("_Splat", splatMap);
-    }
 
+        drawMaterial.SetFloat("_Strength", _brushStrength);
+        drawMaterial.SetFloat("_Size", _brushSize);
+    }
+    
     private void Update()
     {
         for (int i = 0; i < wheel.Length; i++)
         {
             if (Physics.Raycast(wheel[i].position, -Vector3.up, out groundHit, 1f,layermask))
-            {
+            {   // very costly on performace need optimization
                 drawMaterial.SetVector("_Coordinate", new Vector4(groundHit.textureCoord.x, groundHit.textureCoord.y, 0, 0));
-                drawMaterial.SetFloat("_Strength", _brushStrength);
-                drawMaterial.SetFloat("_Size", _brushSize);
-
+                
                 RenderTexture temp = RenderTexture.GetTemporary(splatMap.width, splatMap.height, 0, RenderTextureFormat.ARGBFloat);
                 Graphics.Blit(splatMap, temp);
                 Graphics.Blit(temp, splatMap, drawMaterial);

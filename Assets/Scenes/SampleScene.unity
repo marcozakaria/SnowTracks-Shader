@@ -965,6 +965,7 @@ GameObject:
   - component: {fileID: 1513905121}
   - component: {fileID: 1513905120}
   - component: {fileID: 1513905124}
+  - component: {fileID: 1513905125}
   m_Layer: 9
   m_Name: Plane
   m_TagString: Untagged
@@ -1056,6 +1057,20 @@ MonoBehaviour:
   drawShader: {fileID: 4800000, guid: 2f2aab4b4ebce364fa55ba4accd4403b, type: 3}
   _brushSize: 100
   _brushStrength: 0.7
+--- !u!114 &1513905125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1513905119}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 608f3c5efcdbfdb4f8ed1bd507fdeee9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  snowFallShader: {fileID: 4800000, guid: 0920c3fe89944aa46999baac34161d53, type: 3}
+  flakeAmount: 0.01
+  flakeOpacity: 0.08
 --- !u!1 &1766812194
 GameObject:
   m_ObjectHideFlags: 0
