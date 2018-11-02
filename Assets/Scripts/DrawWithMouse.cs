@@ -7,6 +7,11 @@ public class DrawWithMouse : MonoBehaviour
     public Camera mainCamera;
     public Shader drawShader; // DrawTrack.shader
 
+    [Range(1,500)]
+    public float _brushSize;
+    [Range(0,1)]
+    public float _brushStrength;
+
     private RenderTexture splatMap;  // for splat map red and black
     private Material snowMaterial, drawMaterial;
 
@@ -29,10 +34,13 @@ public class DrawWithMouse : MonoBehaviour
             if (Physics.Raycast(mainCamera.ScreenPointToRay(Input.mousePosition),out hit))
             {
                 drawMaterial.SetVector("_Coordinate", new Vector4(hit.textureCoord.x, hit.textureCoord.y, 0, 0));
+                drawMaterial.SetFloat("_Strength", _brushStrength);
+                drawMaterial.SetFloat("_Size", _brushSize);
+
                 RenderTexture temp = RenderTexture.GetTemporary(splatMap.width, splatMap.height, 0, RenderTextureFormat.ARGBFloat);
                 Graphics.Blit(splatMap, temp);
                 Graphics.Blit(temp, splatMap,drawMaterial);
-                RenderTexture.ReleaseTemporary(temp);
+                RenderTexture.ReleaseTemporary(temp); // release render texture to not take space in memory
             }
         }
     }

@@ -357,6 +357,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 534669904}
   drawShader: {fileID: 4800000, guid: 2f2aab4b4ebce364fa55ba4accd4403b, type: 3}
+  _brushSize: 100
+  _brushStrength: 0.7
 --- !u!1 &1952632171
 GameObject:
   m_ObjectHideFlags: 0
