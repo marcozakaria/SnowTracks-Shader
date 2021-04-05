@@ -1,17 +1,24 @@
-﻿Shader "Custom/SnowTrack" {
-	Properties {
+﻿Shader "Custom/SnowTrack" 
+{
+	Properties 
+	{
 	    _Tess ("Tessellation", Range(1,32)) = 4
+	    _TessMinDist ("Tessellation Min Camera distance", float) = 10
+	    _TessMaxDist ("Tessellation Max Camera Distance", float) = 25
+		
 		_SnowColor ("Snow Color", Color) = (1,1,1,1)
 		_SnowTex ("Snow (RGB)", 2D) = "white" {}
 		_GroundColor ("Ground Color", Color) = (1,1,1,1)
 		_GroundTex ("Ground (RGB)", 2D) = "white" {}
-		_Splat ("Splat Map", 2D) = "black" {}
-		_MainTex ("Albedo (RGB)", 2D) = "white" {}
+		_Splat ("Splat Tracks Map", 2D) = "black" {}
+		//_MainTex ("Albedo (RGB)", 2D) = "white" {}
+
         _Displacement ("Displacement", Range(0, 1.0)) = 0.3
 		_Glossiness ("Smoothness", Range(0,1)) = 0.5
 		_Metallic ("Metallic", Range(0,1)) = 0.0
 	}
-	SubShader {
+	SubShader 
+	{
 		Tags { "RenderType"="Opaque" }
 		LOD 200
 
@@ -24,30 +31,32 @@
 
 		 #include "Tessellation.cginc"
 
-            struct appdata {
-                float4 vertex : POSITION;
-                float4 tangent : TANGENT;
-                float3 normal : NORMAL;
-                float2 texcoord : TEXCOORD0;
-            };
+        struct appdata 
+		{
+            float4 vertex : POSITION;
+            float4 tangent : TANGENT;
+            float3 normal : NORMAL;
+            float2 texcoord : TEXCOORD0;
+        };
 
-            float _Tess;
+        float _Tess;
+		float _TessMinDist;
+		float _TessMaxDist;
 
-            float4 tessDistance (appdata v0, appdata v1, appdata v2) {
-                float minDist = 10.0;
-                float maxDist = 25.0;
-                return UnityDistanceBasedTess(v0.vertex, v1.vertex, v2.vertex, minDist, maxDist, _Tess);
-            }
+        float4 tessDistance (appdata v0, appdata v1, appdata v2) 
+		{
+            return UnityDistanceBasedTess(v0.vertex, v1.vertex, v2.vertex, _TessMinDist, _TessMaxDist, _Tess);
+        }
 
-            sampler2D _Splat;
-            float _Displacement;
+        sampler2D _Splat;
+        float _Displacement;
 
-            void disp (inout appdata v)
-            {
-                float d = tex2Dlod(_Splat, float4(v.texcoord.xy,0,0)).r * _Displacement;
-                v.vertex.xyz -= v.normal * d;  // invert + to - to make it go down
-				v.vertex.xyz += v.normal * _Displacement; // will push the other vertices upwards so we have a good collider with ground not the snow
-            }
+        void disp (inout appdata v)
+        {
+            float d = tex2Dlod(_Splat, float4(v.texcoord.xy,0,0)).r * _Displacement;
+            v.vertex.xyz -= v.normal * d;  // invert + to - to make it go down
+			v.vertex.xyz += v.normal * _Displacement; // will push the other vertices upwards so we have a good collider with ground not the snow
+        }
 
 
 		sampler2D _GroundTex;
@@ -55,7 +64,8 @@
 		sampler2D _SnowTex;
 		fixed4 _SnowColor;
 
-		struct Input {
+		struct Input 
+		{
 			float2 uv_GroundTex;
 			float2 uv_SnowTex;
 			float2 uv_Splat;
@@ -72,7 +82,8 @@
 			// put more per-instance properties here
 		UNITY_INSTANCING_BUFFER_END(Props)
 
-		void surf (Input IN, inout SurfaceOutputStandard o) {
+		void surf (Input IN, inout SurfaceOutputStandard o) 
+		{
 			// Albedo comes from a texture tinted by color
 			half amount = tex2Dlod(_Splat, float4(IN.uv_Splat,0,0)).r; // take amount from splat image to lerp between color between snow and grouund
 			fixed4 c = lerp(tex2D (_SnowTex, IN.uv_SnowTex) * _SnowColor, tex2D (_GroundTex, IN.uv_GroundTex) * _GroundColor, amount);

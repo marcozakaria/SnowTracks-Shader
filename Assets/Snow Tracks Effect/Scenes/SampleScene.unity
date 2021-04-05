@@ -1330,8 +1330,12 @@ MonoBehaviour:
   - {fileID: 148713015}
   - {fileID: 1766812195}
   - {fileID: 35729786}
+  layermask:
+    serializedVersion: 2
+    m_Bits: 512
   _brushSize: 0.8
   _brushStrength: 1
+  splatMapSize: 512
 --- !u!1 &1513905119
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,6 +9,7 @@ public class WheelTracks : MonoBehaviour
     public Transform[] wheel;
 
     [Header("Bush Settings")]
+    [SerializeField] LayerMask layermask;
     [Range(0, 10)]
     public float _brushSize;
     [Range(0, 2)]
@@ -22,12 +23,11 @@ public class WheelTracks : MonoBehaviour
     private Material snowMaterial, drawMaterial;
 
     RaycastHit groundHit;
-    int layermask; // to make sure that we are on ground
     RenderTexture temp;
 
     private void Start()
     {
-        layermask = LayerMask.GetMask("Ground");
+        //layermask = LayerMask.GetMask("Ground");
         drawMaterial = new Material(drawShader);
         //drawMaterial.SetVector("_Color", Color.red);
 
