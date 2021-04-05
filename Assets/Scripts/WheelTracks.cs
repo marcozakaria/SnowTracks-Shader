@@ -8,16 +8,22 @@ public class WheelTracks : MonoBehaviour
     public GameObject terrainWithScript;// that contains snowtrack script
     public Transform[] wheel;
 
+    [Header("Bush Settings")]
     [Range(0, 10)]
     public float _brushSize;
-    [Range(0, 1)]
+    [Range(0, 2)]
     public float _brushStrength;
+
+    [Header("SplatMap Settings")]
+    [Range(64,1024)]
+    [SerializeField] int splatMapSize = 512;
 
     private RenderTexture splatMap;  // for splat map red and black
     private Material snowMaterial, drawMaterial;
 
     RaycastHit groundHit;
     int layermask; // to make sure that we are on ground
+    RenderTexture temp;
 
     private void Start()
     {
@@ -26,14 +32,23 @@ public class WheelTracks : MonoBehaviour
         //drawMaterial.SetVector("_Color", Color.red);
 
         snowMaterial = terrainWithScript.GetComponent<MeshRenderer>().material; // will get snowTrack shader
-        splatMap = new RenderTexture(1024, 1024, 0, RenderTextureFormat.ARGBFloat);
+        splatMap = new RenderTexture(splatMapSize, splatMapSize, 0, RenderTextureFormat.ARGBFloat);
         snowMaterial.SetTexture("_Splat", splatMap);
 
         drawMaterial.SetFloat("_Strength", _brushStrength);
         drawMaterial.SetFloat("_Size", _brushSize);
     }
-    
-    private void Update()
+
+    private void OnValidate()
+    {
+        if (drawMaterial != null)
+        {
+            drawMaterial.SetFloat("_Strength", _brushStrength);
+            drawMaterial.SetFloat("_Size", _brushSize);
+        }      
+    }
+
+    private void FixedUpdate()
     {
         for (int i = 0; i < wheel.Length; i++)
         {
@@ -41,7 +56,7 @@ public class WheelTracks : MonoBehaviour
             {   // very costly on performace need optimization
                 drawMaterial.SetVector("_Coordinate", new Vector4(groundHit.textureCoord.x, groundHit.textureCoord.y, 0, 0));
                 
-                RenderTexture temp = RenderTexture.GetTemporary(splatMap.width, splatMap.height, 0, RenderTextureFormat.ARGBFloat);
+                temp = RenderTexture.GetTemporary(splatMap.width, splatMap.height, 0, RenderTextureFormat.ARGBFloat);
                 Graphics.Blit(splatMap, temp);
                 Graphics.Blit(temp, splatMap, drawMaterial);
                 RenderTexture.ReleaseTemporary(temp); // release render texture to not take space in memory
