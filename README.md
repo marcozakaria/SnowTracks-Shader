@@ -1,5 +1,6 @@
 # SnowTracks-Shader
-Unity Shader To make snow & sand tracks movement trails 
+Unity Shader To make snow & sand tracks movement trails <br>
+Features Tesselation shader and simple car controller with camera follow <br>
 Updates to Unity 2019.4 LTS
 
 
